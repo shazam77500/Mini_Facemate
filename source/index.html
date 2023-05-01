@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        
+
+    </head>
+    <body>
+        <img src="http://192.168.31.5:8081/" /> <!--Enter the IP Address of your Raspberry Pi-->
+        
+        <div style=" float:right;">
+	<div>
+            <div style=" height:250px; width:450px;">
+            <center>
+                <h2>Contrôle du robot</h2>
+
+                <button onclick="move('avant')">Avance</button><br><br>
+                <button onclick="move('gauche')">Gauche</button>
+                <button onclick="move('droite')">Droite</button><br><br>
+                <button onclick="move('arriere')">Recule</button>
+            </center>
+          
+            <center>
+                <h2>Contrôle de la caméra</h2>
+
+                <button onclick="move('reco_facial7')">Reconnaissance facial</button><br><br>
+                
+                <button onclick="move('haut_cam')">&#x1F881;&#x1F881;</button><br><br>
+                <button onclick="move('gauche_cam')">&#x1F880;&#x1F880;</button>
+                <button onclick="move('cam_initial')">Initial</button>
+                <button onclick="move('droite_cam')">&#x1F882;&#x1F882;</button><br><br>
+                <button onclick="move('bas_cam')">&#x1F883;&#x1F883;</button>
+                
+            </center>
+           </div>
+           </div>
+	   </div>
+    </body>
+</html>

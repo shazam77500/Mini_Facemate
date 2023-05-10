@@ -1,8 +1,8 @@
 <?php
 $command = $_GET['direction'];
-switch ($direction) {
+switch ($command) {
     case "avant":
-        exec("python3 main.py");
+        exec("python3 class_moteur_robot.py avant");
         break;
     case "arriere":
         exec("python3 class_moteur_robot.py arriere");

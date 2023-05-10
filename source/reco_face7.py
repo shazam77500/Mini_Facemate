@@ -10,6 +10,8 @@ import pymysql as MySQLdb
 import os
 import subprocess
 
+##########################-- PARTIE JASON -############################
+
 ''' Configuration des clés d'API pour la synthèse vocale avec Baidu AI'''
 SpeechAPP_ID = '17852430'
 SpeechAPI_KEY ='eGeO4iQGAjHCrzBTYd1uvTtf'
@@ -28,7 +30,11 @@ pygame.mixer.init()
 def AudioPlay(phrase):
     # Appel à espeak pour générer le flux audio en français
     espeak_process = subprocess.Popen(["espeak", phrase, "-v", "fr", "-s", "110", "--stdout"], stdout=subprocess.PIPE)
+
+    # Lecture du flux audio généré par espeak en utilisant aplay
     aplay_process = subprocess.Popen(["aplay"], stdin=espeak_process.stdout)
+
+    # Attente de la fin de la lecture audio
     aplay_process.communicate()
 
 # Définition de la fonction pour enregistrer les réponses de l'utilisateur
@@ -49,7 +55,7 @@ def enregistrer_reponse():
         return enregistrer_reponse()
 
 
-
+##########################-- PARTIE VINCENT -############################
 
 
 
@@ -112,10 +118,21 @@ if len(faces) > 0:
                     print("Distance entre le visage {} et le visage de {} : {}".format(i+1, id_personne, distance))
 
 
-                    if distance < 0.9:  # Seuil de similarité
+                    if distance < 0.6:  # Seuil de similarité (peut être ajusté)
                         index = np.argmin(distance)
                         id_personne = results[index]['id']
                         print("La même personne a été reconnue avec l'ID : ", id_personne)
+
+                        ######JASON
+
+                        AudioPlay("Bonjour {}. Comment allez-vous ?".format(id_personne))
+                        reponse = enregistrer_reponse()
+                        print("{} a répondu : {}".format(id_personne, reponse))
+                        AudioPlay("Au revoir.")
+                        time.sleep(3)
+                        break
+
+                        #####VINCENT
 
                         # Enregistrement de la nouvelle photo avec l'ID de la personne reconnue dans la base de données
                         with connection.cursor() as cursor:
@@ -128,17 +145,21 @@ if len(faces) > 0:
                     # Création d'une nouvelle personne dans la base de données
                     with connection.cursor() as cursor:
 
+                        #####JASON########
+
                         # Pose de la première question avec synthèse vocale
                         AudioPlay("Bonjour, quel est votre prénom?")
                         prenom = enregistrer_reponse()
 
-                        # Pose de la deuxième question avec synthèse vocale
+                        # Pose de la première question avec synthèse vocale
                         AudioPlay("Bonjour"+ prenom +"quel est votre nom de famille ?")
                         nom = enregistrer_reponse()
 
                         # Pose de la troisième question avec synthèse vocale
-                        AudioPlay("Bienvenue"+ prenom + nom +",""Quel est votre âge ?")
+                        AudioPlay("Enchanté"+ prenom + nom +",""Quel est votre âge ?")
                         age = enregistrer_reponse()
+
+                        #####VINCENT########
 
                         cursor.execute('INSERT INTO personnes (prenom,nom,age) VALUES (%s, %s,%s)',(prenom,nom,age))
                         id_personne = cursor.lastrowid
@@ -147,7 +168,7 @@ if len(faces) > 0:
 
 else:
     print("Aucun visage détecté dans l'image.")
-    AudioPlay("Aucun visage détecté")
+    AudioPlay("Aucun visage détecté") #####JASON
 
 # Fermeture de la connexion à la base de données
 connection.close()
